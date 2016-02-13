@@ -1,0 +1,63 @@
+//Encrypts Data Using Viginere Cipher
+
+#include<stdio.h>
+#include<cs50.h>
+#include<stdlib.h>
+#include<string.h>
+#include<ctype.h>
+ 
+string toolow(string);
+int main(int argc,string argv[])
+   {
+     int i,a,b,c,j,k;
+     char d;
+     string plain_txt;   
+     string key_txt;
+     if(argc!=2)
+        {                                                 //returns 1 and warns user if there are more or less than two command-line arguements
+         printf(" please enter valid arguments \n"); 
+         return 1;
+        }
+     key_txt=argv[1];        //to get the key
+     for(k=0;k<strlen(key_txt);k++)
+         {
+           if(key_txt[k]< 64 ||key_txt[k]>124 )
+               {                                           //returns 1 and warns user if the key is non alphabetical charecter
+                printf(" please enter valid arguments \n");  
+                return 1;    
+               }
+         }    
+     plain_txt= GetString();                        //gets the string to cipher
+     for(i=0,j=0;i<strlen(plain_txt);i++) 
+          {                                               // to encipher upper case letters 
+            if(j==strlen(key_txt))                       
+                j=0;
+            if(plain_txt[i]>64&&plain_txt[i]<92) 
+                {
+                   b=(int)plain_txt[i];                //   converts ith element of the palin_text to int
+                   b=b-64;                            //    to convert ascii value to corresponding alphabetical rank
+                   d=tolower(key_txt[j]);            //     converting any upper case letters to lowercase
+                   a=(int)d;                 
+                   a=a-97;                         //       coverting jth element of key from ascii value to corresponding alphabetical rank
+                   c=(b+a)%26;                    //        enciphering formula
+                   c=c+64;                 
+                   plain_txt[i]=c; 
+                   j++;
+                }
+           if(plain_txt[i]>96 && plain_txt[i]<124)
+                {                                       //to encipher lower case letters
+                   b=(int)plain_txt[i];                 
+                   b=b-97;
+                   d=tolower(key_txt[j]);
+                   a=(int)d                      
+                   c=(b+a)%26;                 
+                   c=c+97;                
+                   plain_txt[i]=c; 
+                   j++;
+                }
+                
+          }
+          
+     printf("%s\n",plain_txt);
+     
+    }
